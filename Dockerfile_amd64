@@ -1,0 +1,18 @@
+FROM riccardoblb/base:amd64
+MAINTAINER Riccardo Balbo <riccardo0blb@gmail.com>
+
+USER root
+ADD start.sh /start.sh
+ADD template_config.py /template_config.py
+RUN   apk --no-cache upgrade && \
+    apk --no-cache add \      
+        git \
+        python2 python2-dev   \
+        py-pip  build-base &&\
+    pip install twisted &&\
+    git clone  https://github.com/Atrides/xmr-proxy.git && \
+    cd xmr-proxy &&\
+    apk del \
+        git py-pip  python2-dev build-base&&\
+    chmod +x /start.sh
+    CMD  ["/start.sh"]
